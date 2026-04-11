@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/criss/Downloads/U2000 LEDEFYL-20260407T194504Z-3-001/U2000 LEDEFYL/U2000/**)",
+      "Read(//c/Users/criss/Downloads/U2000 LEDEFYL-20260407T194504Z-3-001/U2000 LEDEFYL/U2000 setup/**)",
+      "Bash(find 'C:/Users/criss/Downloads/U2000 LEDEFYL-20260407T194504Z-3-001/U2000 LEDEFYL/U2000/client/client/var/' -name *.xml)",
+      "Bash(find 'C:/Users/criss/Downloads/U2000 LEDEFYL-20260407T194504Z-3-001/U2000 LEDEFYL/U2000/client/client/plugins/' -name *.jar)",
+      "Bash(grep -v \"^$\")",
+      "Bash('C:/Users/criss/Downloads/U2000 LEDEFYL-20260407T194504Z-3-001/U2000 LEDEFYL/U2000/jre/bin/jar.exe' tf 'C:/Users/criss/Downloads/U2000 LEDEFYL-20260407T194504Z-3-001/U2000 LEDEFYL/U2000/lib/iview.jar')",
+      "Bash(grep \"\\\\.exe$\")",
+      "Bash(cmd.exe /c \"cd /d \"\"C:\\\\Users\\\\criss\\\\Downloads\\\\U2000 LEDEFYL-20260407T194504Z-3-001\\\\U2000 LEDEFYL\\\\U2000\"\" && jre\\\\bin\\\\java.exe -version\")",
+      "Read(//mnt/c/Windows/System32/**)",
+      "Read(//c/Windows/System32/**)",
+      "Bash(find 'C:/Users/criss/Downloads/U2000 LEDEFYL-20260407T194504Z-3-001/U2000 LEDEFYL/U2000/' -name *.jar)",
+      "Bash(python -c \":*)",
+      "Bash(mv \"resources/js/Pages/auth/login.jsx\" \"resources/js/Pages/auth/Login_temp.jsx\")",
+      "Bash(mkdir -p \"resources/js/Pages/Auth\")",
+      "Bash(mv \"resources/js/Pages/auth/Login_temp.jsx\" \"resources/js/Pages/Auth/Login.jsx\")",
+      "Bash(rmdir \"resources/js/Pages/auth\")",
+      "Bash(mv auth:*)",
+      "Bash(mv Auth_temp Auth)"
+    ]
+  }
+}
