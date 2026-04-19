@@ -1,66 +1,309 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Chivo Pedidos
 
-## About Laravel
+**Sistema de gestión de pedidos para pequeños negocios**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+[![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-336791?style=flat-square&logo=postgresql&logoColor=white)](https://neon.tech)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+[Reportar Bug](https://github.com/Cristian-Sosaa/ChivoPedidos/issues) · [Solicitar Feature](https://github.com/Cristian-Sosaa/ChivoPedidos/issues)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+</div>
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tabla de Contenidos
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- [Sobre el Proyecto](#sobre-el-proyecto)
+- [Stack Tecnológico](#stack-tecnológico)
+- [Características](#características)
+- [Requisitos Previos](#requisitos-previos)
+- [Instalación](#instalación)
+- [Configuración del Entorno](#configuración-del-entorno)
+- [Base de Datos](#base-de-datos)
+- [Usuarios por Defecto](#usuarios-por-defecto)
+- [Comandos Disponibles](#comandos-disponibles)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Roles y Permisos](#roles-y-permisos)
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Sobre el Proyecto
 
-## Laravel Sponsors
+**Chivo Pedidos** es una aplicación web monolítica para gestionar productos, clientes, pedidos, pagos y reportes de pequeños negocios. Construida con Laravel 11 e Inertia.js, entrega una experiencia de SPA sin necesidad de un servidor de frontend separado — Laravel sirve directamente los componentes React.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Stack Tecnológico
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+| Capa | Tecnología |
+|------|-----------|
+| Backend | Laravel 11, PHP 8.2+ |
+| Frontend | React 19, Inertia.js 2.0 |
+| Estilos | Tailwind CSS 3.4 |
+| Build tool | Vite 6 |
+| Base de datos | PostgreSQL (Neon) |
+| Autenticación | Laravel Session + Spatie Permission |
+| Íconos | Lucide React |
+| Rutas JS | Ziggy 2.6 |
+| Testing | PHPUnit 11 |
+| Formato PHP | Laravel Pint |
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Características
 
-## Code of Conduct
+- Autenticación con email y contraseña
+- Sistema de roles y permisos granulares (Spatie Laravel-Permission)
+- Dashboard con métricas del negocio
+- Sidebar responsivo con navegación por permisos
+- Componentes UI reutilizables (Button, Card, Badge, Input, Label)
+- Hook `usePermissions()` para control de acceso en el frontend
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Módulos planificados:** Categorías · Productos · Clientes · Pedidos · Pagos · Reportes · Configuración
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Requisitos Previos
 
-## License
+| Herramienta | Versión mínima | Verificar |
+|-------------|---------------|-----------|
+| PHP | 8.2+ | `php -v` |
+| Composer | 2.x | `composer -V` |
+| Node.js | 18+ | `node -v` |
+| npm | 9+ | `npm -v` |
+| Git | Cualquiera | `git -v` |
+| Cuenta en Neon | — | [neon.tech](https://neon.tech) |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Instalación
+
+> React, Inertia.js, Tailwind, Spatie y el resto de librerías **no se instalan por separado** — todo entra automáticamente con `composer install` y `npm install`.
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/Cristian-Sosaa/ChivoPedidos.git
+cd ChivoPedidos
+```
+
+### 2. Instalar dependencias PHP
+
+```bash
+composer install
+```
+
+Instala automáticamente: Laravel 11, Inertia para Laravel, Spatie Permission, Ziggy, Pint, PHPUnit y más.
+
+### 3. Instalar dependencias JavaScript
+
+```bash
+npm install
+```
+
+Instala automáticamente: React 19, Inertia React, Tailwind CSS, Lucide React, Vite y más.
+
+### 4. Copiar el archivo de entorno
+
+```bash
+cp .env.example .env
+```
+
+### 5. Generar la clave de la aplicación
+
+```bash
+php artisan key:generate
+```
+
+### 6. Publicar la configuración de Spatie
+
+```bash
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+```
+
+### 7. Configurar Neon en el `.env`
+
+Ver sección [Configuración del Entorno](#configuración-del-entorno).
+
+### 8. Ejecutar migraciones y seeders
+
+```bash
+php artisan migrate --seed
+```
+
+### 9. Iniciar el servidor de desarrollo
+
+```bash
+composer run dev
+```
+
+Abre [http://localhost:8000](http://localhost:8000) en tu navegador.
+
+---
+
+## Configuración del Entorno
+
+### Aplicación
+
+```env
+APP_NAME="Chivo Pedidos"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+```
+
+### Base de datos — Neon (PostgreSQL)
+
+Este proyecto usa [Neon](https://neon.tech) como base de datos PostgreSQL en la nube. Para configurarlo:
+
+1. Crea una cuenta gratuita en [neon.tech](https://neon.tech).
+2. Crea un nuevo proyecto — Neon genera la base de datos automáticamente.
+3. En el dashboard de Neon, ve a **Connection Details** y copia los valores.
+4. Pega los valores en tu `.env`:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=<tu-host>.neon.tech
+DB_PORT=5432
+DB_DATABASE=<nombre-de-tu-db>
+DB_USERNAME=<tu-usuario>
+DB_PASSWORD=<tu-contraseña>
+NEON_ENDPOINT=<tu-endpoint>
+```
+
+> El valor de `NEON_ENDPOINT` es el ID del endpoint que aparece en la URL de conexión de Neon (ejemplo: `ep-dry-star-a0ire27`). Es necesario para que Laravel use el pooler de conexiones correctamente.
+
+### Sesiones, caché y cola
+
+```env
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+```
+
+---
+
+## Base de Datos
+
+### Migraciones
+
+| Tabla | Descripción |
+|-------|-------------|
+| `users` | Cuentas de usuario |
+| `cache` | Almacenamiento de caché |
+| `jobs` | Cola de trabajos |
+| `roles` | Roles (Spatie) |
+| `permissions` | Permisos (Spatie) |
+| `model_has_roles` | Relación usuario-rol |
+| `model_has_permissions` | Relación usuario-permiso |
+| `role_has_permissions` | Relación rol-permiso |
+
+### Comandos útiles
+
+```bash
+php artisan migrate              # Ejecutar migraciones pendientes
+php artisan migrate:fresh --seed # Reiniciar y resembrar la BD
+php artisan db:seed              # Solo ejecutar seeders
+php artisan tinker               # Consola interactiva
+```
+
+---
+
+## Usuarios por Defecto
+
+Después de ejecutar `php artisan migrate --seed`:
+
+| Rol | Email | Contraseña |
+|-----|-------|-----------|
+| Administrador | `admin@chivopedidos.com` | `password` |
+| Empleado | `empleado@chivopedidos.com` | `password` |
+
+> **Importante:** Cambia las contraseñas antes de desplegar en producción.
+
+---
+
+## Comandos Disponibles
+
+```bash
+# Desarrollo
+composer run dev                          # Servidor + queue + logs + Vite en paralelo
+php artisan serve                         # Solo el servidor Laravel
+npm run dev                               # Solo Vite con HMR
+npm run build                             # Build de producción
+
+# Testing
+php artisan test                          # Todos los tests
+php artisan test --filter=NombreTest      # Test específico
+
+# Utilidades
+./vendor/bin/pint                         # Formatear código PHP
+php artisan route:list                    # Listar rutas
+php artisan cache:clear                   # Limpiar caché
+php artisan config:clear                  # Limpiar caché de configuración
+```
+
+---
+
+## Estructura del Proyecto
+
+```
+chivopedidos/
+├── app/
+│   ├── Database/                 # Conector personalizado para Neon
+│   ├── Http/
+│   │   ├── Controllers/Auth/     # Login y logout
+│   │   └── Middleware/           # CheckPermission, HandleInertiaRequests
+│   └── Models/User.php           # Usuario con roles y permisos
+├── database/
+│   ├── migrations/
+│   └── seeders/                  # RolesAndPermissionsSeeder
+├── resources/js/
+│   ├── Pages/
+│   │   ├── Dashboard.jsx
+│   │   └── Auth/Login.jsx
+│   ├── Layouts/
+│   │   ├── AuthenticatedLayout.jsx
+│   │   └── GuestLayout.jsx
+│   ├── Components/ui/            # Button, Card, Input, Label, Badge
+│   ├── hooks/usePermissions.js
+│   └── lib/utils.js              # cn() helper
+├── routes/web.php
+├── .env.example
+├── composer.json
+├── package.json
+├── tailwind.config.js
+└── vite.config.js
+```
+
+---
+
+## Roles y Permisos
+
+El sistema usa [Spatie Laravel-Permission](https://spatie.be/docs/laravel-permission).
+
+### Roles
+
+| Rol | Descripción |
+|-----|-------------|
+| `admin` | Acceso completo |
+| `empleado` | Acceso limitado |
+
+### Permisos
+
+| Módulo | Permisos |
+|--------|----------|
+| Usuarios | `usuarios.ver` · `usuarios.crear` · `usuarios.editar` · `usuarios.eliminar` |
+| Categorías | `categorias.ver` · `categorias.crear` · `categorias.editar` |
+| Productos | `productos.ver` · `productos.crear` · `productos.editar` |
+| Clientes | `clientes.ver` · `clientes.crear` · `clientes.editar` |
+| Pedidos | `pedidos.ver` · `pedidos.crear` · `pedidos.editar` |
+| Pagos | `pagos.ver` · `pagos.crear` |
+| Reportes | `reportes.ver` |
+
+
+</div>
