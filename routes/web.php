@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PedidoController;
 use Inertia\Inertia;
 
 // ─── Rutas públicas (invitados) ─────────────────────────
@@ -69,5 +70,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/clientes/{cliente}/editar', [ClienteController::class, 'edit'])->name('clientes.edit');
         Route::put('/clientes/{cliente}', [ClienteController::class, 'update'])->name('clientes.update');
         Route::patch('/clientes/{cliente}/toggle', [ClienteController::class, 'toggleActive'])->name('clientes.toggle');
+    });
+    // ─── Pedidos ────────────────────────────────────────
+    Route::middleware('permission:pedidos.ver')->group(function () {
+        Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+        Route::get('/pedidos/{pedido}', [PedidoController::class, 'show'])->name('pedidos.show');
+    });
+
+    Route::middleware('permission:pedidos.crear')->group(function () {
+        Route::get('/pedidos-crear', [PedidoController::class, 'create'])->name('pedidos.create');
+        Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
+    });
+
+    Route::middleware('permission:pedidos.editar')->group(function () {
+        Route::patch('/pedidos/{pedido}/estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiarEstado');
     });
 });
