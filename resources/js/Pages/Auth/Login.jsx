@@ -1,4 +1,3 @@
-// resources/js/Pages/Auth/Login.jsx
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';

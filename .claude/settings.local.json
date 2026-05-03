@@ -18,7 +18,11 @@
       "Bash(mv \"resources/js/Pages/auth/Login_temp.jsx\" \"resources/js/Pages/Auth/Login.jsx\")",
       "Bash(rmdir \"resources/js/Pages/auth\")",
       "Bash(mv auth:*)",
-      "Bash(mv Auth_temp Auth)"
+      "Bash(mv Auth_temp Auth)",
+      "Bash(xargs wc *)",
+      "Bash(composer show *)",
+      "Bash(npm list *)",
+      "Bash(php -v)"
     ]
   }
 }
