@@ -9,6 +9,7 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\HistorialPedidoController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\DashboardController;
 use Inertia\Inertia;
 
 // ─── Rutas públicas (invitados) ─────────────────────────
@@ -117,4 +118,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:productos.editar')->group(function () {
         Route::patch('/inventario/{producto}/ajustar', [InventarioController::class, 'ajustarStock'])->name('inventario.ajustar');
     });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
 });
