@@ -85,4 +85,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:pedidos.editar')->group(function () {
         Route::patch('/pedidos/{pedido}/estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiarEstado');
     });
+
+    Route::middleware('permission:pedidos.editar')->group(function () {
+        Route::patch('/pedidos/{pedido}/estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiarEstado');
+        Route::post('/pedidos/{pedido}/detalle', [PedidoController::class, 'agregarDetalle'])->name('pedidos.agregarDetalle');
+        Route::patch('/pedidos/{pedido}/detalle/{detalle}/cantidad', [PedidoController::class, 'actualizarCantidad'])->name('pedidos.actualizarCantidad');
+        Route::delete('/pedidos/{pedido}/detalle/{detalle}', [PedidoController::class, 'eliminarDetalle'])->name('pedidos.eliminarDetalle');
+    });
 });

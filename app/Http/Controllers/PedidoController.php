@@ -96,11 +96,19 @@ class PedidoController extends Controller
 
         $estados = EstadoPedido::all();
 
+        $productosEnPedido = $pedido->detalles->pluck('producto_id')->toArray();
+        $productosDisponibles = Producto::activos()
+            ->conStock()
+            ->whereNotIn('id', $productosEnPedido)
+            ->orderBy('nombre')
+            ->get(['id', 'nombre', 'precio', 'stock']);
+
         return Inertia::render('Pedidos/Show', [
             'pedido' => $pedido,
             'estados' => $estados,
             'totalPagado' => $pedido->totalPagado(),
             'saldoPendiente' => $pedido->saldoPendiente(),
+            'productosDisponibles' => $productosDisponibles,
         ]);
     }
 
@@ -120,4 +128,49 @@ class PedidoController extends Controller
 
         return back()->with('success', 'Estado del pedido actualizado.');
     }
+
+    public function agregarDetalle(Request $request, Pedido $pedido)
+    {
+        $request->validate([
+            'producto_id' => ['required', 'exists:productos,id'],
+            'cantidad' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $this->pedidoService->agregarDetalle(
+            $pedido,
+            $request->only(['producto_id', 'cantidad']),
+            $request->user()->id
+        );
+
+        return back()->with('success', 'Producto agregado al pedido.');
+    }
+
+    public function actualizarCantidad(Request $request, Pedido $pedido, int $detalle)
+    {
+        $request->validate([
+            'cantidad' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $this->pedidoService->actualizarCantidad(
+            $pedido,
+            $detalle,
+            $request->input('cantidad'),
+            $request->user()->id
+        );
+
+        return back()->with('success', 'Cantidad actualizada.');
+    }
+
+    public function eliminarDetalle(Pedido $pedido, int $detalle)
+    {
+        $this->pedidoService->eliminarDetalle(
+            $pedido,
+            $detalle,
+            request()->user()->id
+        );
+
+        return back()->with('success', 'Producto eliminado del pedido.');
+    }
+
+    
 }

@@ -101,4 +101,99 @@ class PedidoService
             ->where('nombre', 'cancelado')
             ->exists();
     }
+
+    // Agregar estos métodos al final de la clase PedidoService
+
+    public function agregarDetalle(Pedido $pedido, array $detalle, int $userId): Pedido
+    {
+        return DB::transaction(function () use ($pedido, $detalle, $userId) {
+            $producto = Producto::lockForUpdate()->findOrFail($detalle['producto_id']);
+
+            // Validar que el producto no esté ya en el pedido
+            $existe = $pedido->detalles()->where('producto_id', $producto->id)->exists();
+            if ($existe) {
+                throw ValidationException::withMessages([
+                    'producto_id' => "El producto \"{$producto->nombre}\" ya está en el pedido.",
+                ]);
+            }
+
+            // Validar stock
+            if ($producto->stock < $detalle['cantidad']) {
+                throw ValidationException::withMessages([
+                    'cantidad' => "Stock insuficiente para \"{$producto->nombre}\". Disponible: {$producto->stock}.",
+                ]);
+            }
+
+            $subtotal = $detalle['cantidad'] * $producto->precio;
+
+            // Crear línea
+            $pedido->detalles()->create([
+                'producto_id' => $producto->id,
+                'cantidad' => $detalle['cantidad'],
+                'precio_unitario' => $producto->precio,
+                'subtotal' => $subtotal,
+            ]);
+
+            // Reducir stock
+            $producto->decrement('stock', $detalle['cantidad']);
+
+            // Recalcular total
+            $pedido->recalcularTotal();
+
+            return $pedido->load(['cliente', 'estado', 'detalles.producto']);
+        });
+    }
+
+    public function eliminarDetalle(Pedido $pedido, int $detalleId, int $userId): Pedido
+    {
+        return DB::transaction(function () use ($pedido, $detalleId) {
+            $detalle = $pedido->detalles()->findOrFail($detalleId);
+
+            // Devolver stock
+            $detalle->producto->increment('stock', $detalle->cantidad);
+
+            // Eliminar línea
+            $detalle->delete();
+
+            // Recalcular total
+            $pedido->recalcularTotal();
+
+            return $pedido->load(['cliente', 'estado', 'detalles.producto']);
+        });
+    }
+
+    public function actualizarCantidad(Pedido $pedido, int $detalleId, int $nuevaCantidad, int $userId): Pedido
+    {
+        return DB::transaction(function () use ($pedido, $detalleId, $nuevaCantidad) {
+            $detalle = $pedido->detalles()->findOrFail($detalleId);
+            $producto = Producto::lockForUpdate()->findOrFail($detalle->producto_id);
+
+            $diferencia = $nuevaCantidad - $detalle->cantidad;
+
+            // Si se aumenta la cantidad, validar stock
+            if ($diferencia > 0 && $producto->stock < $diferencia) {
+                throw ValidationException::withMessages([
+                    'cantidad' => "Stock insuficiente. Disponible: {$producto->stock}, necesario: {$diferencia}.",
+                ]);
+            }
+
+            // Ajustar stock
+            if ($diferencia > 0) {
+                $producto->decrement('stock', $diferencia);
+            } elseif ($diferencia < 0) {
+                $producto->increment('stock', abs($diferencia));
+            }
+
+            // Actualizar detalle
+            $detalle->update([
+                'cantidad' => $nuevaCantidad,
+                'subtotal' => $nuevaCantidad * $detalle->precio_unitario,
+            ]);
+
+            // Recalcular total
+            $pedido->recalcularTotal();
+
+            return $pedido->load(['cliente', 'estado', 'detalles.producto']);
+        });
+    }
 }

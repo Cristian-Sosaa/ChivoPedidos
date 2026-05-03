@@ -1,10 +1,10 @@
 // resources/js/Pages/Pedidos/Show.jsx
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConfirmDialog from '@/Components/ConfirmDialog';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
 import { Badge } from '@/Components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { usePermissions } from '@/hooks/usePermissions';
@@ -16,6 +16,10 @@ import {
     CreditCard,
     Clock,
     Send,
+    Plus,
+    Trash2,
+    Minus,
+    Printer,
 } from 'lucide-react';
 
 const estadoVariants = {
@@ -51,19 +55,33 @@ function formatShortDate(dateString) {
     });
 }
 
-export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
+export default function Show({ pedido, estados, totalPagado, saldoPendiente, productosDisponibles }) {
     const { can } = usePermissions();
     const [nuevoEstadoId, setNuevoEstadoId] = useState('');
     const [comentario, setComentario] = useState('');
     const [processing, setProcessing] = useState(false);
 
+    // Agregar producto
+    const [showAgregar, setShowAgregar] = useState(false);
+    const [nuevoProductoId, setNuevoProductoId] = useState('');
+    const [nuevaCantidad, setNuevaCantidad] = useState(1);
+
+    // Eliminar línea
+    const [confirmEliminar, setConfirmEliminar] = useState(null);
+
+    // Editar cantidad
+    const [editandoCantidad, setEditandoCantidad] = useState(null);
+    const [cantidadTemp, setCantidadTemp] = useState('');
+
     const esCancelado = pedido.estado?.nombre === 'cancelado';
     const esEntregado = pedido.estado?.nombre === 'entregado';
+    const puedeEditar = can('pedidos.editar') && !esCancelado && !esEntregado;
+
+    const comprobanteRef = useRef(null);
 
     function handleCambiarEstado(e) {
         e.preventDefault();
         if (!nuevoEstadoId) return;
-
         setProcessing(true);
         router.patch(`/pedidos/${pedido.id}/estado`, {
             estado_id: nuevoEstadoId,
@@ -78,9 +96,144 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
         });
     }
 
+    function handleAgregarProducto(e) {
+        e.preventDefault();
+        if (!nuevoProductoId) return;
+        setProcessing(true);
+        router.post(`/pedidos/${pedido.id}/detalle`, {
+            producto_id: nuevoProductoId,
+            cantidad: nuevaCantidad,
+        }, {
+            preserveScroll: true,
+            onFinish: () => {
+                setProcessing(false);
+                setNuevoProductoId('');
+                setNuevaCantidad(1);
+                setShowAgregar(false);
+            },
+        });
+    }
+
+    function handleEliminarDetalle() {
+        if (!confirmEliminar) return;
+        router.delete(`/pedidos/${pedido.id}/detalle/${confirmEliminar.id}`, {
+            preserveScroll: true,
+            onFinish: () => setConfirmEliminar(null),
+        });
+    }
+
+    function handleActualizarCantidad(detalleId) {
+        const cant = parseInt(cantidadTemp);
+        if (!cant || cant < 1) return;
+        setProcessing(true);
+        router.patch(`/pedidos/${pedido.id}/detalle/${detalleId}/cantidad`, {
+            cantidad: cant,
+        }, {
+            preserveScroll: true,
+            onFinish: () => {
+                setProcessing(false);
+                setEditandoCantidad(null);
+                setCantidadTemp('');
+            },
+        });
+    }
+
+    function handleImprimir() {
+        const contenido = comprobanteRef.current;
+        if (!contenido) return;
+
+        const ventana = window.open('', '_blank');
+        ventana.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Pedido #${String(pedido.id).padStart(4, '0')}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+                    h1 { font-size: 22px; margin-bottom: 4px; }
+                    .subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
+                    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+                    .info-item label { font-size: 11px; color: #999; text-transform: uppercase; display: block; }
+                    .info-item span { font-size: 14px; font-weight: 600; }
+                    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                    th { text-align: left; padding: 8px; border-bottom: 2px solid #ddd; font-size: 12px; color: #666; }
+                    td { padding: 8px; border-bottom: 1px solid #eee; font-size: 13px; }
+                    .text-right { text-align: right; }
+                    .text-center { text-align: center; }
+                    .total-row td { border-top: 2px solid #333; font-weight: bold; font-size: 15px; }
+                    .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+                    .badge-pendiente { background: #fef3c7; color: #92400e; }
+                    .badge-en_proceso { background: #dbeafe; color: #1e40af; }
+                    .badge-enviado { background: #e0e7ff; color: #3730a3; }
+                    .badge-entregado { background: #d1fae5; color: #065f46; }
+                    .badge-cancelado { background: #fee2e2; color: #991b1b; }
+                    .footer { margin-top: 30px; text-align: center; font-size: 11px; color: #999; border-top: 1px solid #eee; padding-top: 15px; }
+                    @media print { body { padding: 0; } }
+                </style>
+            </head>
+            <body>
+                <h1>Pedido #${String(pedido.id).padStart(4, '0')}</h1>
+                <p class="subtitle">Fecha: ${formatDate(pedido.created_at)}</p>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Cliente</label>
+                        <span>${pedido.cliente?.nombre}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Estado</label>
+                        <span class="badge badge-${pedido.estado?.nombre}">${estadoLabels[pedido.estado?.nombre] || pedido.estado?.nombre}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Atendido por</label>
+                        <span>${pedido.usuario?.name}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Total</label>
+                        <span>${formatPrice(pedido.total)}</span>
+                    </div>
+                </div>
+
+                ${pedido.observaciones ? `<p style="font-size:13px;color:#555;margin-bottom:16px;"><strong>Observaciones:</strong> ${pedido.observaciones}</p>` : ''}
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th class="text-center">Cant.</th>
+                            <th class="text-right">P. Unit.</th>
+                            <th class="text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${pedido.detalles?.map((d) => `
+                            <tr>
+                                <td>${d.producto?.nombre}</td>
+                                <td class="text-center">${d.cantidad}</td>
+                                <td class="text-right">${formatPrice(d.precio_unitario)}</td>
+                                <td class="text-right">${formatPrice(d.subtotal)}</td>
+                            </tr>
+                        `).join('')}
+                        <tr class="total-row">
+                            <td colspan="3" class="text-right">Total:</td>
+                            <td class="text-right">${formatPrice(pedido.total)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="footer">
+                    <p>Chivo Pedidos — Comprobante de pedido</p>
+                </div>
+            </body>
+            </html>
+        `);
+        ventana.document.close();
+        ventana.print();
+    }
+
     return (
         <AuthenticatedLayout>
-            <div className="max-w-4xl mx-auto space-y-6">
+            <div className="max-w-4xl mx-auto space-y-6" ref={comprobanteRef}>
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
@@ -99,10 +252,14 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                                 </Badge>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
-                                Creado el {formatDate(pedido.created_at)}
+                                Creado el {formatDate(pedido.created_at)} por {pedido.usuario?.name}
                             </p>
                         </div>
                     </div>
+                    <Button variant="outline" size="sm" onClick={handleImprimir} className="hidden sm:flex">
+                        <Printer className="w-4 h-4 mr-2" />
+                        Imprimir
+                    </Button>
                 </div>
 
                 {/* Info general */}
@@ -149,7 +306,6 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                     </Card>
                 </div>
 
-                {/* Observaciones */}
                 {pedido.observaciones && (
                     <Card>
                         <CardContent className="p-4">
@@ -162,12 +318,57 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                 {/* Detalle de productos */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-base">
-                            <Package className="w-4 h-4" />
-                            Productos ({pedido.detalles?.length || 0})
-                        </CardTitle>
+                        <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2 text-base">
+                                <Package className="w-4 h-4" />
+                                Productos ({pedido.detalles?.length || 0})
+                            </CardTitle>
+                            {puedeEditar && productosDisponibles.length > 0 && (
+                                <Button variant="outline" size="sm" onClick={() => setShowAgregar(!showAgregar)}>
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Agregar
+                                </Button>
+                            )}
+                        </div>
                     </CardHeader>
                     <CardContent>
+                        {/* Formulario para agregar producto */}
+                        {showAgregar && (
+                            <form onSubmit={handleAgregarProducto} className="flex flex-col gap-3 p-3 mb-4 border border-gray-100 rounded-lg sm:flex-row bg-gray-50">
+                                <div className="flex-1">
+                                    <select
+                                        value={nuevoProductoId}
+                                        onChange={(e) => setNuevoProductoId(e.target.value)}
+                                        className="flex w-full px-3 py-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm h-9 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                    >
+                                        <option value="">Seleccionar producto...</option>
+                                        {productosDisponibles.map((p) => (
+                                            <option key={p.id} value={p.id}>
+                                                {p.nombre} — {formatPrice(p.precio)} (stock: {p.stock})
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="w-24">
+                                    <Input
+                                        type="number"
+                                        min="1"
+                                        value={nuevaCantidad}
+                                        onChange={(e) => setNuevaCantidad(parseInt(e.target.value) || 1)}
+                                        className="text-center"
+                                    />
+                                </div>
+                                <div className="flex gap-2">
+                                    <Button type="submit" size="sm" disabled={!nuevoProductoId || processing}>
+                                        Agregar
+                                    </Button>
+                                    <Button type="button" variant="ghost" size="sm" onClick={() => setShowAgregar(false)}>
+                                        Cancelar
+                                    </Button>
+                                </div>
+                            </form>
+                        )}
+
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
@@ -176,6 +377,9 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                                         <th className="py-2 font-medium text-center text-gray-600">Cantidad</th>
                                         <th className="py-2 font-medium text-right text-gray-600">P. Unitario</th>
                                         <th className="py-2 font-medium text-right text-gray-600">Subtotal</th>
+                                        {puedeEditar && (
+                                            <th className="w-20 py-2 font-medium text-center text-gray-600">Acc.</th>
+                                        )}
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
@@ -184,24 +388,81 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                                             <td className="py-2 font-medium text-gray-900">
                                                 {det.producto?.nombre}
                                             </td>
-                                            <td className="py-2 text-center text-gray-600">{det.cantidad}</td>
+                                            <td className="py-2 text-center text-gray-600">
+                                                {editandoCantidad === det.id ? (
+                                                    <div className="flex items-center justify-center gap-1">
+                                                        <Input
+                                                            type="number"
+                                                            min="1"
+                                                            value={cantidadTemp}
+                                                            onChange={(e) => setCantidadTemp(e.target.value)}
+                                                            className="w-20 text-xs text-center h-7"
+                                                            autoFocus
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === 'Enter') {
+                                                                    e.preventDefault();
+                                                                    handleActualizarCantidad(det.id);
+                                                                }
+                                                                if (e.key === 'Escape') {
+                                                                    setEditandoCantidad(null);
+                                                                }
+                                                            }}
+                                                        />
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-7 w-7"
+                                                            onClick={() => handleActualizarCantidad(det.id)}
+                                                        >
+                                                            <Send className="w-3 h-3" />
+                                                        </Button>
+                                                    </div>
+                                                ) : (
+                                                    <span
+                                                        className={puedeEditar ? 'cursor-pointer hover:text-indigo-600 hover:underline' : ''}
+                                                        onClick={() => {
+                                                            if (puedeEditar) {
+                                                                setEditandoCantidad(det.id);
+                                                                setCantidadTemp(String(det.cantidad));
+                                                            }
+                                                        }}
+                                                        title={puedeEditar ? 'Clic para editar cantidad' : ''}
+                                                    >
+                                                        {det.cantidad}
+                                                    </span>
+                                                )}
+                                            </td>
                                             <td className="py-2 text-right text-gray-600">
                                                 {formatPrice(det.precio_unitario)}
                                             </td>
                                             <td className="py-2 font-semibold text-right text-gray-900">
                                                 {formatPrice(det.subtotal)}
                                             </td>
+                                            {puedeEditar && (
+                                                <td className="py-2 text-center">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="text-red-500 h-7 w-7 hover:text-red-700 hover:bg-red-50"
+                                                        onClick={() => setConfirmEliminar(det)}
+                                                        title="Eliminar producto"
+                                                    >
+                                                        <Trash2 className="w-3.5 h-3.5" />
+                                                    </Button>
+                                                </td>
+                                            )}
                                         </tr>
                                     ))}
                                 </tbody>
                                 <tfoot>
                                     <tr className="border-t-2 border-gray-200">
-                                        <td colSpan={3} className="py-3 font-semibold text-right text-gray-700">
+                                        <td colSpan={puedeEditar ? 3 : 3} className="py-3 font-semibold text-right text-gray-700">
                                             Total:
                                         </td>
                                         <td className="py-3 text-lg font-bold text-right text-gray-900">
                                             {formatPrice(pedido.total)}
                                         </td>
+                                        {puedeEditar && <td />}
                                     </tr>
                                 </tfoot>
                             </table>
@@ -210,7 +471,7 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                 </Card>
 
                 {/* Cambiar estado */}
-                {can('pedidos.editar') && !esCancelado && !esEntregado && (
+                {puedeEditar && (
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-base">
@@ -294,7 +555,7 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                     </Card>
                 )}
 
-                {/* Pagos (preview, se completa en Fase 11) */}
+                {/* Pagos */}
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-base">
@@ -314,6 +575,7 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                                         <tr className="border-b border-gray-200">
                                             <th className="py-2 font-medium text-left text-gray-600">Fecha</th>
                                             <th className="py-2 font-medium text-left text-gray-600">Método</th>
+                                            <th className="hidden py-2 font-medium text-left text-gray-600 sm:table-cell">Referencia</th>
                                             <th className="py-2 font-medium text-right text-gray-600">Monto</th>
                                             <th className="py-2 font-medium text-center text-gray-600">Estado</th>
                                         </tr>
@@ -323,6 +585,7 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                                             <tr key={pago.id}>
                                                 <td className="py-2 text-gray-600">{formatShortDate(pago.created_at)}</td>
                                                 <td className="py-2 text-gray-600 capitalize">{pago.metodo_pago}</td>
+                                                <td className="hidden py-2 text-gray-500 sm:table-cell">{pago.referencia || '—'}</td>
                                                 <td className="py-2 font-semibold text-right">{formatPrice(pago.monto)}</td>
                                                 <td className="py-2 text-center">
                                                     <Badge variant={pago.estado === 'confirmado' ? 'success' : 'warning'}>
@@ -338,6 +601,17 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente }) {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Modal confirmar eliminar producto */}
+            <ConfirmDialog
+                open={!!confirmEliminar}
+                title="Eliminar producto del pedido"
+                message={`¿Estás seguro de eliminar "${confirmEliminar?.producto?.nombre}" del pedido? El stock será devuelto.`}
+                confirmText="Eliminar"
+                variant="destructive"
+                onConfirm={handleEliminarDetalle}
+                onCancel={() => setConfirmEliminar(null)}
+            />
         </AuthenticatedLayout>
     );
 }
