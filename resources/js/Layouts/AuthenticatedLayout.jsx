@@ -18,6 +18,8 @@ import {
     ChevronDown,
     UserCog,
     History,
+    AlertTriangle,
+    Warehouse,
 } from 'lucide-react';
 
 function getNavigation(can, isAdmin) {
@@ -26,6 +28,7 @@ function getNavigation(can, isAdmin) {
         { name: 'Usuarios', href: '/usuarios', icon: UserCog, show: can('usuarios.ver') },
         { name: 'Categorías', href: '/categorias', icon: FolderOpen, show: can('categorias.ver') },
         { name: 'Productos', href: '/productos', icon: Package, show: can('productos.ver') },
+        { name: 'Inventario', href: '/inventario', icon: Warehouse, show: can('productos.ver') },
         { name: 'Clientes', href: '/clientes', icon: Users, show: can('clientes.ver') },
         { name: 'Pedidos', href: '/pedidos', icon: ShoppingCart, show: can('pedidos.ver') },
         { name: 'Pagos', href: '/pagos', icon: CreditCard, show: can('pagos.ver') },
@@ -40,6 +43,8 @@ function Sidebar({ open, setOpen }) {
     const { url } = usePage();
     const { can, isAdmin } = usePermissions();
     const navigation = getNavigation(can, isAdmin);
+    const { alertasStock } = usePage().props;
+    const totalAlertas = (alertasStock?.sin_stock || 0) + (alertasStock?.stock_bajo || 0);
 
     return (
         <>
@@ -68,20 +73,29 @@ function Sidebar({ open, setOpen }) {
                 </div>
 
                 <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-                    {navigation.map((item) => {
+                {navigation.map((item) => {
                         const isActive = url.startsWith(item.href);
+                        const showBadge = item.name === 'Inventario' && totalAlertas > 0;
+
                         return (
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                                className={`flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                                     isActive
                                         ? 'bg-indigo-50 text-indigo-700'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                 }`}
                             >
-                                <item.icon className={`w-5 h-5 ${isActive ? 'text-indigo-600' : 'text-gray-400'}`} />
-                                {item.name}
+                                <div className="flex items-center gap-3">
+                                    <item.icon className={`w-5 h-5 ${isActive ? 'text-indigo-600' : 'text-gray-400'}`} />
+                                    {item.name}
+                                </div>
+                                {showBadge && (
+                                    <span className="flex items-center justify-center min-w-5 h-5 px-1.5 text-xs font-bold text-white bg-red-500 rounded-full">
+                                        {totalAlertas}
+                                    </span>
+                                )}
                             </Link>
                         );
                     })}

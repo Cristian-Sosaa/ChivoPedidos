@@ -8,6 +8,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\HistorialPedidoController;
+use App\Http\Controllers\InventarioController;
 use Inertia\Inertia;
 
 // ─── Rutas públicas (invitados) ─────────────────────────
@@ -107,5 +108,13 @@ Route::middleware('auth')->group(function () {
     // ─── Historial de pedidos ───────────────────────────
     Route::middleware('permission:pedidos.ver')->group(function () {
         Route::get('/historial', [HistorialPedidoController::class, 'index'])->name('historial.index');
+    });
+    // ─── Inventario ─────────────────────────────────────
+    Route::middleware('permission:productos.ver')->group(function () {
+        Route::get('/inventario', [InventarioController::class, 'index'])->name('inventario.index');
+    });
+
+    Route::middleware('permission:productos.editar')->group(function () {
+        Route::patch('/inventario/{producto}/ajustar', [InventarioController::class, 'ajustarStock'])->name('inventario.ajustar');
     });
 });
