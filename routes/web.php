@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ProductoController;
 use Inertia\Inertia;
 
 // ─── Rutas públicas (invitados) ─────────────────────────
@@ -37,5 +38,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/categorias/{categoria}/editar', [CategoriaController::class, 'edit'])->name('categorias.edit');
         Route::put('/categorias/{categoria}', [CategoriaController::class, 'update'])->name('categorias.update');
         Route::patch('/categorias/{categoria}/toggle', [CategoriaController::class, 'toggleActive'])->name('categorias.toggle');
+    });
+    // ─── Productos ──────────────────────────────────────
+    Route::middleware('permission:productos.ver')->group(function () {
+        Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+    });
+
+    Route::middleware('permission:productos.crear')->group(function () {
+        Route::get('/productos/crear', [ProductoController::class, 'create'])->name('productos.create');
+        Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+    });
+
+    Route::middleware('permission:productos.editar')->group(function () {
+        Route::get('/productos/{producto}/editar', [ProductoController::class, 'edit'])->name('productos.edit');
+        Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
+        Route::patch('/productos/{producto}/toggle', [ProductoController::class, 'toggleActive'])->name('productos.toggle');
     });
 });
