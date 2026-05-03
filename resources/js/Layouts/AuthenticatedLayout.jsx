@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { usePermissions } from '@/hooks/usePermissions';
+import FlashMessages from '@/Components/FlashMessages';
 import {
     LayoutDashboard,
     Package,
@@ -169,6 +170,7 @@ export default function AuthenticatedLayout({ children }) {
                 <Topbar setOpen={setSidebarOpen} user={auth?.user} />
 
                 <main className="flex-1 p-4 overflow-y-auto sm:p-6">
+                    <FlashMessages />
                     {children}
                 </main>
             </div>
