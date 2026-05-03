@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\HistorialPedidoController;
 use Inertia\Inertia;
 
 // ─── Rutas públicas (invitados) ─────────────────────────
@@ -102,5 +103,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/pagos/crear', [PagoController::class, 'create'])->name('pagos.create');
         Route::post('/pagos', [PagoController::class, 'store'])->name('pagos.store');
         Route::patch('/pagos/{pago}/anular', [PagoController::class, 'anular'])->name('pagos.anular');
+    });
+    // ─── Historial de pedidos ───────────────────────────
+    Route::middleware('permission:pedidos.ver')->group(function () {
+        Route::get('/historial', [HistorialPedidoController::class, 'index'])->name('historial.index');
     });
 });
