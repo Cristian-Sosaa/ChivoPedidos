@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ClienteController;
 use Inertia\Inertia;
 
 // ─── Rutas públicas (invitados) ─────────────────────────
@@ -53,5 +54,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/productos/{producto}/editar', [ProductoController::class, 'edit'])->name('productos.edit');
         Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
         Route::patch('/productos/{producto}/toggle', [ProductoController::class, 'toggleActive'])->name('productos.toggle');
+    });
+    // ─── Clientes ───────────────────────────────────────
+    Route::middleware('permission:clientes.ver')->group(function () {
+        Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
+    });
+
+    Route::middleware('permission:clientes.crear')->group(function () {
+        Route::get('/clientes/crear', [ClienteController::class, 'create'])->name('clientes.create');
+        Route::post('/clientes', [ClienteController::class, 'store'])->name('clientes.store');
+    });
+
+    Route::middleware('permission:clientes.editar')->group(function () {
+        Route::get('/clientes/{cliente}/editar', [ClienteController::class, 'edit'])->name('clientes.edit');
+        Route::put('/clientes/{cliente}', [ClienteController::class, 'update'])->name('clientes.update');
+        Route::patch('/clientes/{cliente}/toggle', [ClienteController::class, 'toggleActive'])->name('clientes.toggle');
     });
 });
