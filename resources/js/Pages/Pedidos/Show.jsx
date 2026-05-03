@@ -557,11 +557,21 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente, pro
 
                 {/* Pagos */}
                 <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-base">
-                            <CreditCard className="w-4 h-4" />
-                            Pagos ({pedido.pagos?.length || 0})
-                        </CardTitle>
+                <CardHeader>
+                        <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2 text-base">
+                                <CreditCard className="w-4 h-4" />
+                                Pagos ({pedido.pagos?.length || 0})
+                            </CardTitle>
+                            {can('pagos.crear') && !esCancelado && saldoPendiente > 0 && (
+                                <Link href={`/pagos/crear?pedido_id=${pedido.id}`}>
+                                    <Button variant="outline" size="sm">
+                                        <Plus className="w-4 h-4 mr-1" />
+                                        Registrar pago
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
                     </CardHeader>
                     <CardContent>
                         {pedido.pagos?.length === 0 ? (

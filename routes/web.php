@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\PagoController;
 use Inertia\Inertia;
 
 // ─── Rutas públicas (invitados) ─────────────────────────
@@ -91,5 +92,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/pedidos/{pedido}/detalle', [PedidoController::class, 'agregarDetalle'])->name('pedidos.agregarDetalle');
         Route::patch('/pedidos/{pedido}/detalle/{detalle}/cantidad', [PedidoController::class, 'actualizarCantidad'])->name('pedidos.actualizarCantidad');
         Route::delete('/pedidos/{pedido}/detalle/{detalle}', [PedidoController::class, 'eliminarDetalle'])->name('pedidos.eliminarDetalle');
+    });
+    // ─── Pagos ──────────────────────────────────────────
+    Route::middleware('permission:pagos.ver')->group(function () {
+        Route::get('/pagos', [PagoController::class, 'index'])->name('pagos.index');
+    });
+
+    Route::middleware('permission:pagos.crear')->group(function () {
+        Route::get('/pagos/crear', [PagoController::class, 'create'])->name('pagos.create');
+        Route::post('/pagos', [PagoController::class, 'store'])->name('pagos.store');
+        Route::patch('/pagos/{pago}/anular', [PagoController::class, 'anular'])->name('pagos.anular');
     });
 });
