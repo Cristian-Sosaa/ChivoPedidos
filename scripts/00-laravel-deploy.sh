@@ -1,28 +1,18 @@
 #!/usr/bin/env bash
 
-echo "🚀 Running composer..."
+echo "Instalando dependencias..."
 composer install --no-dev --working-dir=/var/www/html
 
-echo "🔑 Generating application key..."
-php artisan key:generate --show
-
-echo "📦 Caching config..."
+echo "Cacheando configuración..."
 php artisan config:cache
 
-echo "🛤️ Caching routes..."
+echo "Cacheando rutas..."
 php artisan route:cache
 
-echo "🗃️ Running migrations..."
+echo "Ejecutando migraciones..."
 php artisan migrate --force
 
-echo "🌱 Running seeders..."
-php artisan db:seed --force
-
-echo "🔗 Creating storage link..."
+echo "Creando storage link..."
 php artisan storage:link
 
-echo "🏗️ Building frontend assets..."
-npm install
-npm run build
-
-echo "✅ Deployment complete!"
+echo "Deploy completado!"
