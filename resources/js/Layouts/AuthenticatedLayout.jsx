@@ -25,7 +25,6 @@ import {
 function getNavigation(can, isAdmin) {
     const items = [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, show: true },
-        { name: 'Usuarios', href: '/usuarios', icon: UserCog, show: can('usuarios.ver') },
         { name: 'Categorías', href: '/categorias', icon: FolderOpen, show: can('categorias.ver') },
         { name: 'Productos', href: '/productos', icon: Package, show: can('productos.ver') },
         { name: 'Inventario', href: '/inventario', icon: Warehouse, show: can('productos.ver') },
@@ -33,7 +32,6 @@ function getNavigation(can, isAdmin) {
         { name: 'Pedidos', href: '/pedidos', icon: ShoppingCart, show: can('pedidos.ver') },
         { name: 'Pagos', href: '/pagos', icon: CreditCard, show: can('pagos.ver') },
         { name: 'Historial', href: '/historial', icon: History, show: can('pedidos.ver') },
-        { name: 'Reportes', href: '/reportes', icon: BarChart3, show: can('reportes.ver') },
     ];
 
     return items.filter((item) => item.show);
@@ -101,17 +99,7 @@ function Sidebar({ open, setOpen }) {
                     })}
                 </nav>
 
-                {isAdmin() && (
-                    <div className="p-3 border-t border-gray-200">
-                        <Link
-                            href="/configuracion"
-                            className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-600 transition-colors rounded-lg hover:bg-gray-50 hover:text-gray-900"
-                        >
-                            <Settings className="w-5 h-5 text-gray-400" />
-                            Configuración
-                        </Link>
-                    </div>
-                )}
+    
             </aside>
         </>
     );

@@ -103,8 +103,8 @@ export default function Dashboard({
                                     <p className="mt-1 text-2xl font-bold text-gray-900">{formatPrice(metricas.ingresos_mes)}</p>
                                     <p className="text-xs text-gray-400 mt-0.5">Hoy: {formatPrice(metricas.ingresos_hoy)}</p>
                                 </div>
-                                <div className="flex items-center justify-center rounded-lg w-11 h-11 bg-amber-100">
-                                    <DollarSign className="w-5 h-5 text-amber-600" />
+                                <div className="flex items-center justify-center bg-purple-100 rounded-lg w-11 h-11">
+                                    <DollarSign className="w-5 h-5 text-purple-600" />
                                 </div>
                             </div>
                         </CardContent>
@@ -117,7 +117,6 @@ export default function Dashboard({
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-base">
-                                <TrendingUp className="w-4 h-4" />
                                 Ventas últimos 7 días
                             </CardTitle>
                         </CardHeader>
@@ -157,7 +156,6 @@ export default function Dashboard({
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-base">
-                                <CalendarDays className="w-4 h-4" />
                                 Ventas mensuales
                             </CardTitle>
                         </CardHeader>
@@ -227,7 +225,7 @@ export default function Dashboard({
                                         <tbody className="divide-y divide-gray-100">
                                             {pedidosRecientes.map((pedido) => (
                                                 <tr key={pedido.id} className="hover:bg-gray-50">
-                                                    <td className="py-2 font-mono font-semibold text-gray-900">#{String(pedido.id).padStart(4, '0')}</td>
+                                                    <td className="py-2 font-mono text-gray-900">#{String(pedido.id).padStart(4, '0')}</td>
                                                     <td className="py-2 text-gray-700">{pedido.cliente?.nombre}</td>
                                                     <td className="hidden py-2 text-xs text-gray-500 sm:table-cell">{formatDate(pedido.created_at)}</td>
                                                     <td className="py-2 text-center">

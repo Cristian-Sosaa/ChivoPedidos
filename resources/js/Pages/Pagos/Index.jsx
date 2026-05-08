@@ -162,7 +162,7 @@ export default function Index({ pagos, filters }) {
                                             <td className="px-4 py-3">
                                                 <Link
                                                     href={`/pedidos/${pago.pedido_id}`}
-                                                    className="font-mono font-semibold text-indigo-600 hover:text-indigo-800"
+                                                    className="font-mono "
                                                 >
                                                     #{String(pago.pedido_id).padStart(4, '0')}
                                                 </Link>

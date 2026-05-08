@@ -146,7 +146,7 @@ export default function Index({ pedidos, estados, filters }) {
                                     pedidos.data.map((pedido) => (
                                         <tr key={pedido.id} className="transition-colors hover:bg-gray-50">
                                             <td className="px-4 py-3">
-                                                <span className="font-mono font-semibold text-gray-900">
+                                                <span className="font-mono text-gray-900">
                                                     #{String(pedido.id).padStart(4, '0')}
                                                 </span>
                                             </td>

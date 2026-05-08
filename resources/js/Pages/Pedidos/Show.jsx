@@ -298,7 +298,7 @@ export default function Show({ pedido, estados, totalPagado, saldoPendiente, pro
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500">Saldo pendiente</p>
-                                <p className={`font-semibold ${saldoPendiente > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                <p className={`font-semibold ${saldoPendiente > 0 ? '' : ''}`}>
                                     {formatPrice(saldoPendiente)}
                                 </p>
                             </div>

@@ -115,7 +115,6 @@ export default function Index({ productos, categorias, filters }) {
                             onClick={() => applyFilters({ bajo_stock: filters?.bajo_stock ? '' : '1' })}
                             className="gap-1"
                         >
-                            <AlertTriangle className="w-3.5 h-3.5" />
                             Stock bajo
                         </Button>
                     </div>
@@ -169,15 +168,12 @@ export default function Index({ productos, categorias, filters }) {
                                                 <span
                                                     className={`inline-flex items-center gap-1 font-medium ${
                                                         producto.stock <= 10
-                                                            ? 'text-red-600'
+                                                            ? ''
                                                             : producto.stock <= 25
-                                                              ? 'text-amber-600'
+                                                              ? ''
                                                               : 'text-gray-700'
                                                     }`}
                                                 >
-                                                    {producto.stock <= 10 && (
-                                                        <AlertTriangle className="w-3.5 h-3.5" />
-                                                    )}
                                                     {producto.stock}
                                                 </span>
                                             </td>

@@ -69,7 +69,7 @@ export default function Form({ producto, categorias }) {
                                     type="text"
                                     value={data.nombre}
                                     onChange={(e) => setData('nombre', e.target.value)}
-                                    placeholder="Ej: Coca-Cola 600ml, Laptop HP..."
+                                    placeholder="Ej: Coca-Cola 600ml, Chocolatina..."
                                     autoFocus
                                 />
                                 {errors.nombre && (
