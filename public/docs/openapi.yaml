@@ -1,0 +1,1020 @@
+openapi: 3.0.3
+info:
+  title: ' API Documentation'
+  description: 'API REST para el sistema de gestión de pedidos. Autenticación mediante tokens con Laravel Sanctum.'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+tags:
+  -
+    name: Endpoints
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
+paths:
+  /api/login:
+    post:
+      summary: ''
+      operationId: postApiLogin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: qkunze@example.com
+                password:
+                  type: string
+                  description: ''
+                  example: consequatur
+              required:
+                - email
+                - password
+  /api/logout:
+    post:
+      summary: ''
+      operationId: postApiLogout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+  /api/me:
+    get:
+      summary: ''
+      operationId: getApiMe
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  /api/dashboard:
+    get:
+      summary: ''
+      operationId: getApiDashboard
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  /api/categorias:
+    get:
+      summary: ''
+      operationId: getApiCategorias
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiCategorias
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                descripcion:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: amniihfqcoynlazghdtqt
+                  nullable: true
+              required:
+                - nombre
+  /api/categorias/all:
+    get:
+      summary: ''
+      operationId: getApiCategoriasAll
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  '/api/categorias/{categoria_id}':
+    get:
+      summary: ''
+      operationId: getApiCategoriasCategoria_id
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    put:
+      summary: ''
+      operationId: putApiCategoriasCategoria_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                descripcion:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: amniihfqcoynlazghdtqt
+                  nullable: true
+              required:
+                - nombre
+    parameters:
+      -
+        in: path
+        name: categoria_id
+        description: 'The ID of the categoria.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/categorias/{categoria_id}/toggle':
+    patch:
+      summary: ''
+      operationId: patchApiCategoriasCategoria_idToggle
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: categoria_id
+        description: 'The ID of the categoria.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/productos:
+    get:
+      summary: ''
+      operationId: getApiProductos
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiProductos
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoria_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the categorias table.'
+                  example: null
+                  nullable: true
+                nombre:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                descripcion:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: amniihfqcoynlazghdtqt
+                  nullable: true
+                precio:
+                  type: number
+                  description: 'Must be at least 0.01. Must not be greater than 99999999.99.'
+                  example: 16
+                stock:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 80
+              required:
+                - nombre
+                - precio
+                - stock
+  '/api/productos/{producto_id}':
+    get:
+      summary: ''
+      operationId: getApiProductosProducto_id
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    put:
+      summary: ''
+      operationId: putApiProductosProducto_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoria_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the categorias table.'
+                  example: null
+                  nullable: true
+                nombre:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                descripcion:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: amniihfqcoynlazghdtqt
+                  nullable: true
+                precio:
+                  type: number
+                  description: 'Must be at least 0.01. Must not be greater than 99999999.99.'
+                  example: 16
+                stock:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 80
+              required:
+                - nombre
+                - precio
+                - stock
+    parameters:
+      -
+        in: path
+        name: producto_id
+        description: 'The ID of the producto.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/productos/{producto_id}/toggle':
+    patch:
+      summary: ''
+      operationId: patchApiProductosProducto_idToggle
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: producto_id
+        description: 'The ID of the producto.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/clientes:
+    get:
+      summary: ''
+      operationId: getApiClientes
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiClientes
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                telefono:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: amniihfqcoynlazgh
+                  nullable: true
+                direccion:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: dtqtqxbajwbpilpmufinl
+                  nullable: true
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 150 characters.'
+                  example: imogene.mante@example.com
+                  nullable: true
+              required:
+                - nombre
+  /api/clientes/all:
+    get:
+      summary: ''
+      operationId: getApiClientesAll
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  '/api/clientes/{cliente_id}':
+    get:
+      summary: ''
+      operationId: getApiClientesCliente_id
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    put:
+      summary: ''
+      operationId: putApiClientesCliente_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                telefono:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: amniihfqcoynlazgh
+                  nullable: true
+                direccion:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: dtqtqxbajwbpilpmufinl
+                  nullable: true
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 150 characters.'
+                  example: imogene.mante@example.com
+                  nullable: true
+              required:
+                - nombre
+    parameters:
+      -
+        in: path
+        name: cliente_id
+        description: 'The ID of the cliente.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/clientes/{cliente_id}/toggle':
+    patch:
+      summary: ''
+      operationId: patchApiClientesCliente_idToggle
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: cliente_id
+        description: 'The ID of the cliente.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/pedidos/estados:
+    get:
+      summary: ''
+      operationId: getApiPedidosEstados
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  /api/pedidos:
+    get:
+      summary: ''
+      operationId: getApiPedidos
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiPedidos
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cliente_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the clientes table.'
+                  example: consequatur
+                estado_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the estados_pedido table.'
+                  example: consequatur
+                observaciones:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: mqeopfuudtdsufvyvddqa
+                  nullable: true
+                detalles:
+                  type: array
+                  description: 'Must have at least 1 items.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      producto_id:
+                        type: string
+                        description: 'The <code>id</code> of an existing record in the productos table.'
+                        example: consequatur
+                      cantidad:
+                        type: integer
+                        description: 'Must be at least 1.'
+                        example: 45
+                    required:
+                      - producto_id
+                      - cantidad
+              required:
+                - cliente_id
+                - estado_id
+                - detalles
+  '/api/pedidos/{pedido_id}':
+    get:
+      summary: ''
+      operationId: getApiPedidosPedido_id
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: pedido_id
+        description: 'The ID of the pedido.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/pedidos/{pedido_id}/estado':
+    patch:
+      summary: ''
+      operationId: patchApiPedidosPedido_idEstado
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                estado_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the estados_pedido table.'
+                  example: consequatur
+                comentario:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: mqeopfuudtdsufvyvddqa
+                  nullable: true
+              required:
+                - estado_id
+    parameters:
+      -
+        in: path
+        name: pedido_id
+        description: 'The ID of the pedido.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/pedidos/{pedido_id}/detalle':
+    post:
+      summary: ''
+      operationId: postApiPedidosPedido_idDetalle
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                producto_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the productos table.'
+                  example: consequatur
+                cantidad:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 45
+              required:
+                - producto_id
+                - cantidad
+    parameters:
+      -
+        in: path
+        name: pedido_id
+        description: 'The ID of the pedido.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/pedidos/{pedido_id}/detalle/{detalle}/cantidad':
+    patch:
+      summary: ''
+      operationId: patchApiPedidosPedido_idDetalleDetalleCantidad
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cantidad:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 73
+              required:
+                - cantidad
+    parameters:
+      -
+        in: path
+        name: pedido_id
+        description: 'The ID of the pedido.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: detalle
+        description: 'The detalle.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/pedidos/{pedido_id}/detalle/{detalle}':
+    delete:
+      summary: ''
+      operationId: deleteApiPedidosPedido_idDetalleDetalle
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: pedido_id
+        description: 'The ID of the pedido.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: detalle
+        description: 'The detalle.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/pagos:
+    get:
+      summary: ''
+      operationId: getApiPagos
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiPagos
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pedido_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the pedidos table.'
+                  example: consequatur
+                monto:
+                  type: number
+                  description: 'Must be at least 0.01.'
+                  example: 45
+                metodo_pago:
+                  type: string
+                  description: ''
+                  example: otro
+                  enum:
+                    - efectivo
+                    - tarjeta
+                    - transferencia
+                    - cheque
+                    - otro
+                referencia:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: qeopfuudtdsufvyvddqam
+                  nullable: true
+              required:
+                - pedido_id
+                - monto
+                - metodo_pago
+  /api/pagos/pedidos-con-saldo:
+    get:
+      summary: ''
+      operationId: getApiPagosPedidosConSaldo
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  '/api/pagos/{pago_id}/anular':
+    patch:
+      summary: ''
+      operationId: patchApiPagosPago_idAnular
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: pago_id
+        description: 'The ID of the pago.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/historial:
+    get:
+      summary: ''
+      operationId: getApiHistorial
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  /api/inventario:
+    get:
+      summary: ''
+      operationId: getApiInventario
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  '/api/inventario/{producto_id}/ajustar':
+    patch:
+      summary: ''
+      operationId: patchApiInventarioProducto_idAjustar
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tipo:
+                  type: string
+                  description: ''
+                  example: entrada
+                  enum:
+                    - entrada
+                    - salida
+                    - ajuste
+                cantidad:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 73
+              required:
+                - tipo
+                - cantidad
+    parameters:
+      -
+        in: path
+        name: producto_id
+        description: 'The ID of the producto.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/usuarios:
+    get:
+      summary: ''
+      operationId: getApiUsuarios
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
