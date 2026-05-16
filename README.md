@@ -1,66 +1,289 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/TailwindCSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+  <img src="https://img.shields.io/badge/Sanctum-API-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" />
 </p>
 
-## About Laravel
+<h1 align="center">Chivo Pedidos</h1>
+<p align="center">Sistema de gestión de pedidos con API REST</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  <img src="https://img.shields.io/badge/Endpoints-37-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/Roles-2-green?style=flat-square" />
+  <img src="https://img.shields.io/badge/Permisos-17-orange?style=flat-square" />
+  <img src="https://img.shields.io/badge/Módulos-9-purple?style=flat-square" />
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Acerca del proyecto
 
-## Learning Laravel
+Sistema web para administrar productos, clientes, pedidos, pagos e inventario. Incluye dashboard con gráficos, control de roles/permisos, y una API REST completa con 37 endpoints protegidos con Laravel Sanctum.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tech Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Backend**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![Laravel](https://img.shields.io/badge/Laravel_11-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP_8.2+-777BB4?style=flat-square&logo=php&logoColor=white)
+![Sanctum](https://img.shields.io/badge/Sanctum-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![Spatie](https://img.shields.io/badge/Spatie_Permission-197BC1?style=flat-square&logo=laravel&logoColor=white)
 
-## Laravel Sponsors
+**Frontend**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+![React](https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Inertia](https://img.shields.io/badge/Inertia.js-9553E9?style=flat-square&logo=inertia&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-22B5BF?style=flat-square&logo=recharts&logoColor=white)
 
-### Premium Partners
+**Base de datos e infraestructura**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Neon](https://img.shields.io/badge/Neon-000000?style=flat-square&logo=neon&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black)
 
-## Contributing
+## Módulos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Módulo | Descripción |
+|--------|-------------|
+| Dashboard | Métricas, gráficos de ventas, top productos, top clientes, alertas de stock |
+| Categorías | CRUD completo con activar/desactivar |
+| Productos | CRUD con control de stock y relación con categorías |
+| Clientes | CRUD con búsqueda por nombre, email, teléfono, dirección |
+| Pedidos | Detalle dinámico, cálculo automático de totales, cambio de estados |
+| Pagos | 5 métodos de pago, control de saldo pendiente, anulación |
+| Historial | Auditoría de cambios con vista tabla y timeline |
+| Inventario | Alertas de stock bajo, ajustes de entrada/salida |
+| API REST | 37 endpoints con autenticación por tokens |
 
-## Code of Conduct
+## Roles y permisos
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| | Admin | Empleado |
+|--|:-----:|:--------:|
+| Usuarios | Completo | - |
+| Categorías | Completo | Solo ver |
+| Productos | Completo | Solo ver |
+| Clientes | Completo | Completo |
+| Pedidos | Completo | Completo |
+| Pagos | Completo | Completo |
+| Reportes | Completo | - |
+| Inventario | Completo | Solo ver |
 
-## Security Vulnerabilities
+## Instalación
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/tu-usuario/chivo-pedidos.git
+cd chivo-pedidos
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+```
 
-## License
+Configurar `.env` con los datos de PostgreSQL:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+DB_CONNECTION=pgsql
+DB_HOST=tu-host.neon.tech
+DB_PORT=5432
+DB_DATABASE=neondb
+DB_USERNAME=tu-usuario
+DB_PASSWORD=tu-contraseña
+DB_SSLMODE=require
+```
+
+Ejecutar migraciones, seeders y compilar:
+
+```bash
+php artisan migrate
+php artisan db:seed
+npm run build
+php artisan serve
+```
+
+## Credenciales de prueba
+
+| Rol | Email | Password |
+|-----|-------|----------|
+| Admin | `admin@chivopedidos.com` | `password` |
+| Empleado | `empleado@chivopedidos.com` | `password` |
+
+## API REST
+
+Autenticación con tokens Bearer (Laravel Sanctum).
+
+**Login:**
+```http
+POST /api/login
+Content-Type: application/json
+
+{ "email": "admin@chivopedidos.com", "password": "password" }
+```
+
+**Respuesta:**
+```json
+{
+  "success": true,
+  "message": "Login exitoso.",
+  "data": {
+    "user": { "id": 1, "name": "Administrador", "roles": ["admin"] },
+    "token": "1|abc123..."
+  }
+}
+```
+
+**Usar el token en cada petición:**
+```http
+Authorization: Bearer {token}
+```
+
+### Endpoints
+
+<details>
+<summary><strong>Auth (3)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `POST` | `/api/login` | Iniciar sesión |
+| `POST` | `/api/logout` | Cerrar sesión |
+| `GET` | `/api/me` | Usuario autenticado |
+
+</details>
+
+<details>
+<summary><strong>Dashboard (1)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/dashboard` | Métricas completas del sistema |
+
+</details>
+
+<details>
+<summary><strong>Categorías (6)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/categorias` | Listar con búsqueda y filtros |
+| `GET` | `/api/categorias/all` | Todas las activas |
+| `POST` | `/api/categorias` | Crear |
+| `GET` | `/api/categorias/{id}` | Ver una |
+| `PUT` | `/api/categorias/{id}` | Editar |
+| `PATCH` | `/api/categorias/{id}/toggle` | Activar/desactivar |
+
+</details>
+
+<details>
+<summary><strong>Productos (5)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/productos` | Listar con filtros |
+| `POST` | `/api/productos` | Crear |
+| `GET` | `/api/productos/{id}` | Ver uno |
+| `PUT` | `/api/productos/{id}` | Editar |
+| `PATCH` | `/api/productos/{id}/toggle` | Activar/desactivar |
+
+</details>
+
+<details>
+<summary><strong>Clientes (6)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/clientes` | Listar con búsqueda |
+| `GET` | `/api/clientes/all` | Todos los activos |
+| `POST` | `/api/clientes` | Crear |
+| `GET` | `/api/clientes/{id}` | Ver uno |
+| `PUT` | `/api/clientes/{id}` | Editar |
+| `PATCH` | `/api/clientes/{id}/toggle` | Activar/desactivar |
+
+</details>
+
+<details>
+<summary><strong>Pedidos (8)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/pedidos` | Listar con filtros |
+| `POST` | `/api/pedidos` | Crear con detalle |
+| `GET` | `/api/pedidos/{id}` | Ver detalle completo |
+| `GET` | `/api/pedidos/estados` | Estados disponibles |
+| `PATCH` | `/api/pedidos/{id}/estado` | Cambiar estado |
+| `POST` | `/api/pedidos/{id}/detalle` | Agregar producto |
+| `PATCH` | `/api/pedidos/{id}/detalle/{det}/cantidad` | Cambiar cantidad |
+| `DELETE` | `/api/pedidos/{id}/detalle/{det}` | Eliminar producto |
+
+</details>
+
+<details>
+<summary><strong>Pagos (4)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/pagos` | Listar con filtros |
+| `POST` | `/api/pagos` | Registrar pago |
+| `PATCH` | `/api/pagos/{id}/anular` | Anular pago |
+| `GET` | `/api/pagos/pedidos-con-saldo` | Pedidos con saldo |
+
+</details>
+
+<details>
+<summary><strong>Historial (1)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/historial` | Cambios de estado |
+
+</details>
+
+<details>
+<summary><strong>Inventario (2)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/inventario` | Inventario con resumen |
+| `PATCH` | `/api/inventario/{id}/ajustar` | Ajustar stock |
+
+</details>
+
+<details>
+<summary><strong>Usuarios (1)</strong></summary>
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/api/usuarios` | Listar usuarios |
+
+</details>
+
+## Arquitectura
+
+```
+app/
+├── Http/Controllers/          Controladores web (Inertia)
+├── Http/Controllers/Api/      Controlador API (JSON)
+├── Http/Requests/             Validaciones compartidas
+├── Models/                    Modelos Eloquent
+├── Services/                  Lógica de negocio
+resources/js/
+├── Pages/                     Páginas React
+├── Layouts/                   Sidebar, topbar
+├── Components/                Componentes reutilizables
+routes/
+├── web.php                    Rutas web
+├── api.php                    Rutas API
+```
+
+La interfaz web usa Inertia.js y la API REST funciona de forma independiente. Ambas capas comparten los mismos modelos, servicios y validaciones.
+
+## Documentación
+
+La documentación interactiva de la API está disponible en `/docs`.
+
+## Licencia
+
+Este proyecto está bajo la [MIT License](LICENSE).
