@@ -10,6 +10,7 @@
 <p align="center">Sistema de gestión de pedidos con API REST</p>
 
 <p align="center">
+  <img src="./screenshot/dashboard.png" alt="Dashboard Chivo Pedidos" width="100%" />
   <img src="https://img.shields.io/badge/Endpoints-37-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/Roles-2-green?style=flat-square" />
   <img src="https://img.shields.io/badge/Permisos-17-orange?style=flat-square" />
