@@ -38,9 +38,7 @@ class PedidoService
                     Log::info('PROCESANDO DETALLE', $detalle);
 
                     // BUSCAR PRODUCTO
-                    $producto = Producto::where('id', $detalle['producto_id'])
-                        ->lockForUpdate()
-                        ->first();
+                    $producto = Producto::findOrFail($detalle['producto_id']);
 
                     Log::info('PRODUCTO ENCONTRADO', [
                         'producto' => $producto
