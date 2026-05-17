@@ -22,6 +22,7 @@ class PedidoService
                 Log::info('DATA RECIBIDA', $data);
 
                 if (!isset($data['detalles']) || empty($data['detalles'])) {
+
                     throw ValidationException::withMessages([
                         'detalles' => 'Debe agregar al menos un producto.',
                     ]);
@@ -49,18 +50,21 @@ class PedidoService
                         !isset($detalle['producto_id']) ||
                         !isset($detalle['cantidad'])
                     ) {
+
                         throw ValidationException::withMessages([
                             'detalle' => 'Detalle inválido.',
                         ]);
                     }
 
                     if ($detalle['cantidad'] <= 0) {
+
                         throw ValidationException::withMessages([
                             'cantidad' => 'La cantidad debe ser mayor a 0.',
                         ]);
                     }
 
-                    $producto = Producto::findOrFail($detalle['producto_id']);
+                    $producto = Producto::lockForUpdate()
+                        ->findOrFail($detalle['producto_id']);
 
                     Log::info('PRODUCTO ENCONTRADO', [
                         'id' => $producto->id,
@@ -70,12 +74,16 @@ class PedidoService
                     ]);
 
                     if ($producto->stock < $detalle['cantidad']) {
+
                         throw ValidationException::withMessages([
                             'detalles' => "Stock insuficiente para \"{$producto->nombre}\". Disponible: {$producto->stock}, solicitado: {$detalle['cantidad']}.",
                         ]);
                     }
 
-                    $subtotal = $detalle['cantidad'] * $producto->precio;
+                    $subtotal = round(
+                        $detalle['cantidad'] * $producto->precio,
+                        2
+                    );
 
                     $pedido->detalles()->create([
                         'producto_id' => $producto->id,
@@ -90,7 +98,24 @@ class PedidoService
                         'subtotal' => $subtotal,
                     ]);
 
-                    $producto->decrement('stock', $detalle['cantidad']);
+                    $nuevoStock = $producto->stock - $detalle['cantidad'];
+
+                    Log::info('VALIDANDO STOCK', [
+                        'stock_actual' => $producto->stock,
+                        'cantidad' => $detalle['cantidad'],
+                        'nuevo_stock' => $nuevoStock,
+                    ]);
+
+                    if ($nuevoStock < 0) {
+
+                        throw ValidationException::withMessages([
+                            'stock' => "Stock insuficiente para {$producto->nombre}",
+                        ]);
+                    }
+
+                    $producto->stock = $nuevoStock;
+
+                    $producto->save();
 
                     Log::info('STOCK ACTUALIZADO', [
                         'producto_id' => $producto->id,
@@ -101,7 +126,7 @@ class PedidoService
                 }
 
                 $pedido->update([
-                    'total' => $total,
+                    'total' => round($total, 2),
                 ]);
 
                 Log::info('TOTAL ACTUALIZADO', [
@@ -130,7 +155,11 @@ class PedidoService
 
             Log::error('=== ERROR CREANDO PEDIDO ===');
 
-            Log::error($e->getMessage());
+            Log::error('MENSAJE: ' . $e->getMessage());
+
+            Log::error('ARCHIVO: ' . $e->getFile());
+
+            Log::error('LINEA: ' . $e->getLine());
 
             Log::error($e->getTraceAsString());
 
@@ -221,33 +250,38 @@ class PedidoService
                 $userId
             ) {
 
-                $producto = Producto::findOrFail(
-                    $detalle['producto_id']
-                );
+                $producto = Producto::lockForUpdate()
+                    ->findOrFail($detalle['producto_id']);
 
                 $existe = $pedido->detalles()
                     ->where('producto_id', $producto->id)
                     ->exists();
 
                 if ($existe) {
+
                     throw ValidationException::withMessages([
                         'producto_id' => "El producto \"{$producto->nombre}\" ya está en el pedido.",
                     ]);
                 }
 
                 if ($detalle['cantidad'] <= 0) {
+
                     throw ValidationException::withMessages([
                         'cantidad' => 'Cantidad inválida.',
                     ]);
                 }
 
                 if ($producto->stock < $detalle['cantidad']) {
+
                     throw ValidationException::withMessages([
                         'cantidad' => "Stock insuficiente para \"{$producto->nombre}\".",
                     ]);
                 }
 
-                $subtotal = $detalle['cantidad'] * $producto->precio;
+                $subtotal = round(
+                    $detalle['cantidad'] * $producto->precio,
+                    2
+                );
 
                 $pedido->detalles()->create([
                     'producto_id' => $producto->id,
@@ -256,10 +290,9 @@ class PedidoService
                     'subtotal' => $subtotal,
                 ]);
 
-                $producto->decrement(
-                    'stock',
-                    $detalle['cantidad']
-                );
+                $producto->stock -= $detalle['cantidad'];
+
+                $producto->save();
 
                 $pedido->recalcularTotal();
 
@@ -338,6 +371,7 @@ class PedidoService
             ) {
 
                 if ($nuevaCantidad <= 0) {
+
                     throw ValidationException::withMessages([
                         'cantidad' => 'Cantidad inválida.',
                     ]);
@@ -346,9 +380,8 @@ class PedidoService
                 $detalle = $pedido->detalles()
                     ->findOrFail($detalleId);
 
-                $producto = Producto::findOrFail(
-                    $detalle->producto_id
-                );
+                $producto = Producto::lockForUpdate()
+                    ->findOrFail($detalle->producto_id);
 
                 $diferencia = $nuevaCantidad - $detalle->cantidad;
 
@@ -364,22 +397,21 @@ class PedidoService
 
                 if ($diferencia > 0) {
 
-                    $producto->decrement(
-                        'stock',
-                        $diferencia
-                    );
+                    $producto->stock -= $diferencia;
 
                 } elseif ($diferencia < 0) {
 
-                    $producto->increment(
-                        'stock',
-                        abs($diferencia)
-                    );
+                    $producto->stock += abs($diferencia);
                 }
+
+                $producto->save();
 
                 $detalle->update([
                     'cantidad' => $nuevaCantidad,
-                    'subtotal' => $nuevaCantidad * $detalle->precio_unitario,
+                    'subtotal' => round(
+                        $nuevaCantidad * $detalle->precio_unitario,
+                        2
+                    ),
                 ]);
 
                 $pedido->recalcularTotal();
